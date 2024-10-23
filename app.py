@@ -5,12 +5,13 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # MongoDB configuration
-app.config['MONGO_URI'] = 'mongodb+srv://komal:komal1234@blogapp.4hk3z.mongodb.net/?retryWrites=true&w=majority&appName=BlogApp'
+app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Change this to a secure key in a real application
 
 client = MongoClient(app.config['MONGO_URI'])
