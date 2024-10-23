@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Blogsy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .glassy {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .floating-card {
+            transition: transform 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0px 0px 20px rgba(255, 223, 173, 0.7);
+        }
+
+        .glow {
+            box-shadow: 0px 0px 20px rgba(255, 223, 173, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .glow:hover {
+            box-shadow: 0px 0px 40px rgba(255, 223, 173, 1);
+        }
+
+        /* Placeholder color */
+        input::placeholder {
+            color: #E2E2E2; /* Change this color as desired */
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b" style="background: linear-gradient(to bottom, #F8853E, #FEEEA9); color: gray;">
+    <!-- Navbar -->
+    <nav class="bg-[#F99A54] p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+          <!-- Brand and Logo -->
+          <a href="index.html" class="flex items-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2">
+            <span class="text-3xl font-extrabold text-white">Blogsy</span>
+          </a>
+          <!-- Navbar Links (hidden on mobile) -->
+          <div class="hidden md:flex space-x-8 items-center">
+            <a href="blogs" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+            <a href="/" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Logout</a>
+          </div>
+          <!-- Hamburger Icon for Mobile -->
+          <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+        </div>
+        <!-- Mobile Menu (flex column layout for mobile screens) -->
+        <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+            <a href="blogs" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+            <a href="/" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Logout</a>
+          </div>
+      </nav>
+
+    <!-- Dashboard Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold text-black mb-8">View or Create Your Blogs with Blogsy</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+                <!-- View Blogs Card -->
+                <div class="p-6 glassy floating-card">
+                    <img class="mt-2 mb-4" src="https://visme.co/blog/wp-content/uploads/2020/06/Header-1200-2.gif" 
+                         alt="View Blogs">
+                    <h2 class="text-2xl font-bold text-[#F8853E] heading mb-4">View Your Blogs</h2>
+                    <p class="text-gray-600 mb-4">Check out all the amazing blogs you've written. Explore your creative journey and see how you've shared your thoughts with the world.</p>
+                    <a href="view" class="mt-4 inline-block bg-[#F8853E] hover:bg-[#FAAF6A] text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">
+                        View Blogs
+                    </a>
+                </div>
+
+                <!-- Create Blog Card -->
+                <div class="p-6 glassy floating-card">
+                    <img class="mt-2 mb-4" src="https://payu.in/blog/wp-content/uploads/2019/01/Blog-Cover.gif" 
+                         alt="Create Blog">
+                    <h2 class="text-2xl font-bold text-[#F8853E] heading mb-4">Create a New Blog</h2>
+                    <p class="text-gray-600 mb-4">Share your ideas and insights with the world. Start writing your new blog and let your voice be heard!</p>
+                    <a href="create_blog" class="mt-4 inline-block bg-[#F8853E] hover:bg-[#FAAF6A] text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">
+                        Write Blog
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#FCC47F] text-center p-6">
+        <p class="text-white font-bold">© 2024 Blogsy - All rights reserved</p>
+    </footer>
+
+    <script>
+        // Hamburger menu toggle
+        document.getElementById('hamburger').addEventListener('click', function () {
+            var mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

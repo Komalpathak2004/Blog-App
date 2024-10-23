@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog - Blogsy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .glassy {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field {
+            border: 1px solid #F8853E;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #F99A54;
+            outline: none;
+            transform: scale(1.02);
+        }
+
+        input::placeholder {
+            color: #E2E2E2;
+        }
+
+        .icon-input {
+            display: flex;
+            align-items: center;
+            border: 1px solid #F8853E;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .icon-input input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            padding-left: 10px;
+            background: transparent;
+            color: #333;
+        }
+
+        .icon-input:hover {
+            border-color: #F99A54;
+            box-shadow: 0 0 5px rgba(249, 154, 84, 0.6);
+            transform: scale(1.02);
+        }
+
+        .flex-horizontal {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        button {
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #FAAF6A;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient" style="background: linear-gradient(to bottom, #F8853E, #FEEEA9); color: gray;">
+    <!-- Navbar -->
+    <nav class="bg-[#F99A54] p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2">
+                <span class="text-3xl font-extrabold text-white">Blogsy</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="/dashboard" class="text-white text-lg font-bold hover:text-gray-300 transition">Dashboard</a>
+                <a href="/logout" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Logout</a>
+            </div>
+            <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+        </div>
+        <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+            <a href="/dashboard" class="text-white text-lg font-bold hover:text-gray-300 transition">Dashboard</a>
+            <a href="/logout" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Create Blog Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold text-black mb-8 text-center">Create Your Blog with Blogsy</h1>
+            <div class="glassy p-8">
+                <form id="create-blog-form">
+                    <div class="icon-input">
+                        <input type="text" id="title" placeholder="Blog Title" class="input-field w-full" required>
+                    </div>
+                    <div class="icon-input">
+                        <textarea id="content" class="input-field w-full h-48" placeholder="Write your blog here..." required></textarea>
+                    </div>
+                    <button type="submit" class="mt-4 bg-[#F8853E] text-white px-6 py-2 rounded-full font-bold">
+                        Publish Blog
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Existing Blogs Section -->
+    <section class="py-8 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-2xl font-bold text-black mb-4 text-center">Existing Blogs</h2>
+            <button onclick="window.location.href='blogs'" class="mb-4 bg-[#F8853E] text-white px-4 py-2 rounded-full">Fetch Blogs</button>
+            <ul id="blog-list" class="list-disc pl-6"></ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#F99A54] py-6 text-white text-center">
+        <p>&copy; 2024 Blogsy. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let token = localStorage.getItem('token');
+
+        // Create Blog Functionality
+        document.getElementById('create-blog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            const response = await fetch('/blogs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, content })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('Blog created successfully');
+                document.getElementById('create-blog-form').reset(); // Reset form
+                // fetchBlogs(); // Remove this line as fetching is not needed anymore
+            } else {
+                alert('Blog creation failed: ' + data.msg);
+            }
+        });
+
+        // Check if user is logged in
+        if (!token) {
+            alert('You must be logged in to create a blog. Redirecting to login...');
+            window.location.href = '/login';
+        }
+
+        // Hamburger Menu Toggle
+        document.getElementById('hamburger').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

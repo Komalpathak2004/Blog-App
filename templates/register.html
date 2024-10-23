@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Blogsy</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .glassy {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .floating-card {
+      transition: transform 0.3s ease;
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px) scale(1.05);
+    }
+
+    .glow {
+      box-shadow: 0px 0px 20px rgba(255, 223, 173, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .glow:hover {
+      box-shadow: 0px 0px 40px rgba(255, 223, 173, 1);
+    }
+
+    .text-main {
+      color: #F8853E;
+    }
+
+    .text-secondary {
+      color: gray;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient" style="background: linear-gradient(to bottom, #F8853E, #FEEEA9); color: gray;">
+  <!-- Navbar -->
+  <nav class="bg-[#F99A54] p-4 shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="flex items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2">
+        <span class="text-3xl font-extrabold text-white">Blogsy</span>
+      </a>
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+        <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+        <a href="/" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+        <a href="/login" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+      </div>
+      <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+    </div>
+    <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+      <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+      <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+      <a href="/" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+      <a href="/login" class="bg-white text-[#F8853E] px-4 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+    </div>
+  </nav>
+
+  <!-- Register Section -->
+  <section class="h-screen flex items-center justify-center">
+    <div class="glassy p-10 w-full max-w-md">
+      <h1 class="text-3xl font-bold text-center mb-6 text-main">Create Your Account</h1>
+      <form id="register-form">
+        <div class="mb-4">
+          <label for="reg-username" class="block text-sm font-medium text-secondary">Username</label>
+          <input type="text" id="reg-username" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md" placeholder="Your Username">
+        </div>
+        <div class="mb-4">
+          <label for="reg-password" class="block text-sm font-medium text-secondary">Password</label>
+          <input type="password" id="reg-password" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md" placeholder="••••••••">
+        </div>
+        <button type="submit" class="w-full bg-main text-white font-bold py-2 rounded-md transition duration-300" style="background-color: #F8853E;">
+          Register
+        </button>
+      </form>
+      <p class="mt-4 text-center text-sm text-secondary">
+        Already have an account? <a href="/login" class="text-main underline">Login here</a>
+      </p>
+    </div>
+  </section>
+
+  <script>
+    // Hamburger menu toggle
+    document.getElementById('hamburger').addEventListener('click', function () {
+      var mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+  <script>
+    // Registration Functionality
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('reg-username').value;
+        const password = document.getElementById('reg-password').value;
+
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert('Registration successful. You can now login.');
+            window.location.href = '/login'; // Redirect to login page
+        } else {
+            alert('Registration failed: ' + data.msg);
+        }
+    });
+  </script>
+</body>
+
+</html>

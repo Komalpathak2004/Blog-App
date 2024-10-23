@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogs - Blogsy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap");
+
+        body {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .glassy {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .blog-card {
+            transition: transform 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Placeholder color */
+        input::placeholder {
+            color: #e2e2e2;
+        }
+
+        /* Additional styles for heading visibility */
+        .heading {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b from-[#F8853E] to-[#FEEEA9] text-gray-800">
+    <!-- Navbar -->
+    <nav class="bg-[#F99A54] p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Brand and Logo -->
+            <a href="index.html" class="flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2" />
+                <span class="text-3xl font-extrabold text-white">Blogsy</span>
+            </a>
+            <!-- Navbar Links (hidden on mobile) -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+                <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+                <a href="dashboard.html" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+                <a href="register.html" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+            </div>
+            <!-- Hamburger Icon for Mobile -->
+            <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+        </div>
+        <!-- Mobile Menu (flex column layout for mobile screens) -->
+        <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+            <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+            <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+            <a href="dashboard.html" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+            <a href="register.html" class="bg-white text-[#F8853E] px-4 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+        </div>
+    </nav>
+
+    <!-- View Blogs Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold text-black mb-8">View Blogs You Have Written</h1>
+            <button onclick="openAddBlogModal()" class="bg-[#F8853E] text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-[#FAAF6A] transition mb-8">Add Blog</button>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-list">
+                <!-- Blog cards will be dynamically generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#F99A54] py-6 text-white text-center">
+        <p>&copy; 2024 Blogsy. All rights reserved.</p>
+    </footer>
+
+    <!-- Update Blog Modal -->
+    <div id="updateModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg glassy">
+            <h2 class="text-2xl font-bold mb-4">Update Blog</h2>
+            <input type="text" id="updateTitle" placeholder="Blog Title" class="border p-2 w-full mb-2" />
+            <textarea id="updateContent" placeholder="Blog Content" class="border p-2 w-full mb-4" rows="4"></textarea>
+            <button id="saveUpdate" class="bg-[#F8853E] text-white px-4 py-2 rounded">Save</button>
+            <button id="closeUpdateModal" class="bg-red-500 text-white px-4 py-2 rounded ml-2">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Add Blog Modal -->
+    <div id="addBlogModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg glassy">
+            <h2 class="text-2xl font-bold mb-4">Add New Blog</h2>
+            <input type="text" id="newBlogTitle" placeholder="Blog Title" class="border p-2 w-full mb-2" />
+            <textarea id="newBlogContent" placeholder="Blog Content" class="border p-2 w-full mb-4" rows="4"></textarea>
+            <button id="addBlog" class="bg-[#F8853E] text-white px-4 py-2 rounded">Add</button>
+            <button id="closeAddModal" class="bg-red-500 text-white px-4 py-2 rounded ml-2">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+        let selectedBlogId = null;
+
+        // Fetch and display blogs
+        async function fetchBlogs() {
+            const response = await fetch('/blogs', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const blogs = await response.json();
+            const blogList = document.getElementById('blog-list');
+            blogList.innerHTML = '';
+
+            blogs.forEach(blog => {
+                const listItem = document.createElement('div');
+                listItem.classList.add('p-6', 'glassy', 'blog-card');
+                listItem.innerHTML = `
+                    <h2 class="text-2xl font-bold text-[#F8853E] heading mb-2">${blog.title}</h2>
+                    <p class="text-gray-600 mb-1"><strong>Date Issued:</strong> ${new Date(blog.date).toLocaleDateString()}</p>
+                    <p class="text-gray-600 mb-4">${blog.content}</p>
+                    <button onclick="likeBlog('${blog.id}')" class="mt-4 inline-block bg-[#F8853E] hover:bg-[#FAAF6A] text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">Like (${blog.likes})</button>
+                    <button onclick="openUpdateModal('${blog.id}', '${blog.title}', '${blog.content}')" class="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">Edit</button>
+                    <button onclick="deleteBlog('${blog.id}')" class="mt-4 inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">Delete</button>
+                `;
+                blogList.appendChild(listItem);
+            });
+        }
+
+        // Like a blog
+        async function likeBlog(blogId) {
+            const response = await fetch(`/blogs/${blogId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                fetchBlogs();
+            }
+        }
+
+        // Delete a blog
+        async function deleteBlog(blogId) {
+            const response = await fetch(`/blogs/${blogId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                fetchBlogs();
+            }
+        }
+
+        // Open add blog modal
+        function openAddBlogModal() {
+            document.getElementById('addBlogModal').classList.remove('hidden');
+        }
+
+        // Close add blog modal
+        document.getElementById('closeAddModal').onclick = function () {
+            document.getElementById('addBlogModal').classList.add('hidden');
+        };
+
+        // Add new blog
+        document.getElementById('addBlog').onclick = async function () {
+            const title = document.getElementById('newBlogTitle').value;
+            const content = document.getElementById('newBlogContent').value;
+
+            const response = await fetch('/blogs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, content })
+            });
+
+            if (response.ok) {
+                fetchBlogs();
+                document.getElementById('addBlogModal').classList.add('hidden');
+            }
+        };
+
+        // Open update modal
+        function openUpdateModal(id, title, content) {
+            selectedBlogId = id;
+            document.getElementById('updateTitle').value = title;
+            document.getElementById('updateContent').value = content;
+            document.getElementById('updateModal').classList.remove('hidden');
+        }
+
+        // Close update modal
+        document.getElementById('closeUpdateModal').onclick = function () {
+            document.getElementById('updateModal').classList.add('hidden');
+        };
+
+        // Save updated blog
+        document.getElementById('saveUpdate').onclick = async function () {
+            const title = document.getElementById('updateTitle').value;
+            const content = document.getElementById('updateContent').value;
+
+            const response = await fetch(`/blogs/${selectedBlogId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, content })
+            });
+
+            if (response.ok) {
+                fetchBlogs();
+                document.getElementById('updateModal').classList.add('hidden');
+            }
+        };
+
+        // Initial fetch
+        window.onload = fetchBlogs;
+
+        // Hamburger menu toggle for mobile
+        document.getElementById('hamburger').onclick = function () {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        };
+    </script>
+</body>
+
+</html>

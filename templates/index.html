@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogsy</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .floating-card {
+      transition: transform 0.3s ease;
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px) scale(1.05);
+    }
+
+    .glow {
+      box-shadow: 0px 0px 20px rgba(255, 223, 173, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .glow:hover {
+      box-shadow: 0px 0px 40px rgba(255, 223, 173, 1);
+    }
+
+    .bg-custom {
+      background-color: #F99A54;
+    }
+
+    .text-primary {
+      color: #F8853E;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b" style="background: linear-gradient(to bottom, #F8853E, #FEEEA9); color: gray;">
+  <!-- Navbar -->
+  <nav class="bg-custom p-4 shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Brand and Logo -->
+      <a href="index.html" class="flex items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2">
+        <span class="text-3xl font-extrabold text-white">Blogsy</span>
+      </a>
+      <!-- Navbar Links (hidden on mobile) -->
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+        <a href="#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+        <a href="/create_blog" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+        <a href="/login" class="bg-white text-primary px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+      </div>
+      <!-- Hamburger Icon for Mobile -->
+      <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+    </div>
+    <!-- Mobile Menu (flex column layout for mobile screens) -->
+    <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+      <a href="#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+      <a href="#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+      <a href="/" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+      <a href="/login" class="bg-white text-primary px-4 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+    </div>
+  </nav>
+
+  <!-- Landing Page -->
+  <section class="h-screen flex items-center justify-center text-center relative px-4" style="background-image: url('https://c1.wallpaperflare.com/preview/372/239/789/paper-office-background-blog-blogger-browsing.jpg');">
+    <div class="absolute inset-0 bg-black opacity-70"></div> <!-- Background overlay -->
+    <div class="relative z-10 transform transition-transform duration-500 hover:scale-105">
+      <h1 class="text-6xl md:text-5xl font-extrabold text-white mb-8 drop-shadow-lg glow-text">
+        Welcome to <span class="text-primary">Blogsy</span>
+      </h1>
+      <p class="text-xl font-bold md:text-xl text-white mb-8 drop-shadow-md">
+        Create your own blog in simple steps. Share your voice with the world!
+      </p>
+      <a href="dashboard.html" class="bg-primary hover:bg-[#FAAF6A] text-white px-8 py-4 rounded-full font-extrabold text-lg shadow-lg glow transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+        Get Started
+      </a>
+    </div>
+  </section>
+
+  <!-- About Section with Image -->
+  <section id="about" class="py-16 bg-white text-gray-800">
+    <div class="container mx-auto flex flex-col md:flex-row items-center px-4">
+      <!-- About Content -->
+      <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+        <h2 class="text-4xl font-extrabold mb-6 text-primary">About Blogsy</h2>
+        <p class="text-lg md:text-xl leading-8 mb-8 max-w-3xl">
+          Blogsy is your go-to platform for sharing ideas, experiences, and thoughts with the world. Whether you’re an experienced blogger or just starting, we’ve made it simple to create stunning blogs with ease.
+        </p>
+      </div>
+      <!-- About Image -->
+      <div class="md:w-1/2 flex justify-center">
+        <img src="https://visme.co/blog/wp-content/uploads/2020/02/header-1200.gif" alt="About Blogsy" class="rounded-lg shadow-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 bg-gradient-to-b from-[#FAAF6A] to-[#FDD995]">
+    <div class="container mx-auto text-center px-4">
+      <h2 class="text-4xl font-extrabold text-white mb-12">Simple Steps to Create Your Blog</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="p-6 bg-white rounded-lg shadow-lg floating-card">
+          <img src="https://cdn.dribbble.com/users/1292879/screenshots/4135235/createaccount_done.gif"
+            class="mx-auto mb-4 rounded-full shadow-lg w-40 h-40 object-cover"
+            alt="Create Account">
+          <h3 class="text-2xl font-bold text-primary mb-2">Create an Account</h3>
+          <p class="text-gray-600">Get started by creating an account in a few easy steps.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-6 bg-white rounded-lg shadow-lg floating-card">
+          <img src="https://www.icegif.com/wp-content/uploads/2023/10/icegif-622.gif"
+            class="mx-auto mb-4 rounded-full shadow-lg w-40 h-40 object-cover"
+            alt="Create Blog Post">
+          <h3 class="text-2xl font-bold text-[#F99A54] mb-2">Write a Blog Post</h3>
+          <p class="text-gray-600">Craft your story, upload your content, and make it live for your audience.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-6 bg-white rounded-lg shadow-lg floating-card">
+          <img src="https://cdn.dribbble.com/users/5911/screenshots/1382887/laptop.gif"
+            class="mx-auto mb-4 rounded-full shadow-lg w-40 h-40 object-cover"
+            alt="Publish Blog">
+          <h3 class="text-2xl font-bold text-[#FAAF6A] mb-2">Publish Your Blog</h3>
+          <p class="text-gray-600">Just hit the publish button, and you're ready to share it with the world!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-custom text-center p-6">
+    <p class="text-white font-bold">© 2024 Blogsy - All rights reserved</p>
+  </footer>
+
+  <script>
+    // Hamburger menu toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      var mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Blogs - Blogsy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" type="image/x-icon">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap");
+
+        body {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .glassy {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .blog-card {
+            transition: transform 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        input::placeholder {
+            color: #e2e2e2;
+        }
+
+        .heading {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b" style="background: linear-gradient(to bottom, #F8853E, #FEEEA9); color: gray;">
+    <nav class="bg-[#F99A54] p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/6114/6114045.png" alt="Logo" class="w-10 h-10 mr-2" />
+                <span class="text-3xl font-extrabold text-white">Blogsy</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+                <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+                <a href="dashboard.html" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+                <a href="register.html" class="bg-white text-[#F8853E] px-6 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+            </div>
+            <button id="hamburger" class="md:hidden text-white text-2xl font-bold focus:outline-none">☰</button>
+        </div>
+        <div id="mobileMenu" class="hidden flex-col space-y-4 mt-4 bg-[#F99A54] p-4 rounded-lg">
+            <a href="index.html#about" class="text-white text-lg font-bold hover:text-gray-300 transition">About</a>
+            <a href="index.html#features" class="text-white text-lg font-bold hover:text-gray-300 transition">Features</a>
+            <a href="dashboard.html" class="text-white text-lg font-bold hover:text-gray-300 transition">Create Blog</a>
+            <a href="register.html" class="bg-white text-[#F8853E] px-4 py-2 rounded-full font-bold shadow-md hover:bg-gray-200 transition">Login</a>
+        </div>
+    </nav>
+    
+    <!-- View Blogs Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold text-black mb-8">View Blogs You Have Written</h1>
+            <button onclick="fetchBlogs()" class="bg-[#F8853E] text-white px-4 py-2 rounded-lg mb-4">Fetch Blogs</button>
+            <ul id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog items will be dynamically inserted here -->
+            </ul>
+        </div>
+    </section>
+
+    <!-- Modal for Editing Blog -->
+    <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg p-6 glassy w-1/3">
+            <h2 class="text-xl font-bold mb-4">Edit Blog</h2>
+            <input id="editTitle" type="text" placeholder="Title" class="border p-2 w-full mb-4" />
+            <textarea id="editContent" rows="5" placeholder="Content" class="border p-2 w-full mb-4"></textarea>
+            <button id="saveEditBtn" class="bg-[#F8853E] text-white px-4 py-2 rounded-lg">Save</button>
+            <button onclick="closeEditModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#F99A54] py-6 text-white text-center">
+        <p>&copy; 2024 Blogsy. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentBlogId;
+
+        async function fetchBlogs() {
+            const response = await fetch('/blogs');
+            const blogs = await response.json();
+            const blogList = document.getElementById('blog-list');
+            blogList.innerHTML = ''; // Clear existing blog items
+            blogs.forEach(blog => {
+                const listItem = document.createElement('li');
+                listItem.className = "p-6 glassy blog-card"; // Add class for styling
+                listItem.innerHTML = `
+                    <h2 class="text-2xl font-bold text-[#F8853E] heading mb-2">${blog.title}</h2>
+                    <p class="text-gray-600 mb-1"><strong>Date Issued:</strong> ${blog.date}</p>
+                    <p class="text-gray-600 mb-4">${blog.content}</p>
+                    <p>Likes: <span id="like-count-${blog.id}">${blog.likes}</span></p>
+                    <button onclick="likeBlog(${blog.id})" class="bg-[#F8853E] text-white px-4 py-2 rounded-lg mb-2">Like</button>
+                    <a href="#" onclick="viewBlog(${blog.id})" class="mt-4 inline-block bg-[#F8853E] hover:bg-[#FAAF6A] text-white px-4 py-2 rounded-full font-bold transition transform hover:scale-105">Show Blog</a>
+                    <div class="mt-4">
+                        <button onclick="showEditModal(${blog.id}, '${blog.title}', '${blog.content}')" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Edit</button>
+                        <button onclick="deleteBlog(${blog.id})" class="bg-red-500 text-white px-4 py-2 rounded-lg ml-2">Delete</button>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mt-4">Comments</h3>
+                        <div id="comments-section-${blog.id}" class="mb-4"></div>
+                        <form onsubmit="submitComment(event, ${blog.id})">
+                            <textarea id="comment-content-${blog.id}" placeholder="Add a comment" class="border p-2 w-full mb-2" required></textarea>
+                            <button type="submit" class="bg-[#F8853E] text-white px-4 py-2 rounded-lg">Submit Comment</button>
+                        </form>
+                    </div>
+                `;
+                blogList.appendChild(listItem);
+                loadComments(blog.id); // Load comments for each blog
+            });
+        }
+
+        async function loadComments(blogId) {
+            const response = await fetch(`/blogs/${blogId}/comments`);
+            const data = await response.json();
+            const commentsSection = document.getElementById(`comments-section-${blogId}`);
+            commentsSection.innerHTML = ''; // Clear existing comments
+            data.comments.forEach(comment => {
+                commentsSection.innerHTML += `<p>${comment.content}</p>`;
+            });
+        }
+
+        async function likeBlog(blogId) {
+            const response = await fetch(`/blogs/${blogId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const likeCountElement = document.getElementById(`like-count-${blogId}`);
+                likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1;
+            } else {
+                alert('Failed to like the blog');
+            }
+        }
+
+        async function submitComment(event, blogId) {
+            event.preventDefault();
+            const commentContent = document.getElementById(`comment-content-${blogId}`).value;
+
+            const response = await fetch(`/blogs/${blogId}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: commentContent }),
+            });
+
+            if (response.ok) {
+                document.getElementById(`comment-content-${blogId}`).value = ''; // Clear the textarea
+                loadComments(blogId); // Reload comments
+            } else {
+                alert('Failed to submit comment');
+            }
+        }
+
+        function showEditModal(blogId, title, content) {
+            currentBlogId = blogId;
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editContent').value = content;
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        async function saveEdit() {
+            const title = document.getElementById('editTitle').value;
+            const content = document.getElementById('editContent').value;
+
+            const response = await fetch(`/blogs/${currentBlogId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, content }),
+            });
+
+            if (response.ok) {
+                fetchBlogs(); // Refresh blog list
+                closeEditModal();
+            } else {
+                alert('Failed to update the blog');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        async function deleteBlog(blogId) {
+            const response = await fetch(`/blogs/${blogId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                fetchBlogs(); // Refresh blog list
+            } else {
+                alert('Failed to delete the blog');
+            }
+        }
+    </script>
+</body>
+</html>
